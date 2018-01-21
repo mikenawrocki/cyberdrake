@@ -1,23 +1,32 @@
 #include "cyberdrake.h"
 #include "eyes.h"
 #include "gesture.h"
+#include "monitor.h"
 
 Adafruit_NeoPixel head_np{HEAD_NP_NUM_PIXELS, HEAD_NP_PIN, NEO_GRB | NEO_KHZ800};
 
 struct cyberdrake_state state;
 
+const char* const mood_str_map[N_MOODS] = {
+    "NEUTRAL",
+    "HAPPY",
+    "LOVING",
+    "IRRITATED",
+    "ANGRY",
+    "CONFUSED",
+    "OWO",
+};
 
 static void read_jaw(void)
 {
-    state.jaw_open = digitalRead(JAW_PIN);
+    state.jaw_open = !digitalRead(JAW_PIN);
 }
 
 static void init_jaw(void)
 {
-    pinMode(JAW_PIN, INPUT);
+    pinMode(JAW_PIN, INPUT_PULLUP);
     read_jaw();
 }
-
 
 void setup()
 {
@@ -36,6 +45,7 @@ void setup()
 
     init_jaw();
     init_eyes();
+    init_monitor();
     init_gesture();
     head_np.begin();
     head_np.show();
@@ -44,6 +54,8 @@ void setup()
 static void update_display(void)
 {
     update_eyes();
+    update_monitor();
+
     head_np.show();
 }
 
@@ -54,13 +66,13 @@ static void update_mood(gesture gst)
     bool mood_updated = true;
 
     if (gst & GESTURE_NOD) {
-        if (state.mood == MOOD_HAPPY) {
+        if (state.mood == MOOD_HAPPY || state.mood == MOOD_LOVING) {
             state.mood = MOOD_LOVING;
         } else {
             state.mood = MOOD_HAPPY;
         }
     } else if (gst & GESTURE_SHAKE) {
-        if (state.mood == MOOD_IRRITATED) {
+        if (state.mood == MOOD_IRRITATED || state.mood == MOOD_ANGRY) {
             state.mood = MOOD_ANGRY;
         } else {
             state.mood = MOOD_IRRITATED;

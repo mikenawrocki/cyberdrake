@@ -12,6 +12,7 @@
 #define EYE_R_OFFSET 1
 #define EYE_L_ROTATION 2
 #define EYE_R_ROTATION 2
+#define EYE_BRIGHTNESS 15
 
 // Neopixel eyes
 #define EYE_NP_NUM 12

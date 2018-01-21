@@ -21,6 +21,8 @@ enum mood {
     N_MOODS
 };
 
+extern const char* const mood_str_map[N_MOODS];
+
 #define SENSOR_EVENT_RINGBUF_SIZE 5
 struct sensor_event_ringbuf {
     unsigned int head_idx;

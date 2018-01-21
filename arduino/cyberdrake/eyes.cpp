@@ -17,8 +17,8 @@ bool init_eyes(void)
     eyes[EYE_R_OFFSET].begin(EYE_R_ADDR);
     eyes[EYE_L_OFFSET].clear();
     eyes[EYE_R_OFFSET].clear();
-    eyes[EYE_L_OFFSET].setBrightness(15);
-    eyes[EYE_R_OFFSET].setBrightness(15);
+    eyes[EYE_L_OFFSET].setBrightness(EYE_BRIGHTNESS);
+    eyes[EYE_R_OFFSET].setBrightness(EYE_BRIGHTNESS);
     // FIXME verify the rotation
     eyes[EYE_L_OFFSET].setRotation(EYE_L_ROTATION);
     eyes[EYE_R_OFFSET].setRotation(EYE_R_ROTATION);
@@ -42,7 +42,8 @@ static void update_matrix_eyes(void)
     }
     if (intra_frame_counter++ > 0)
     {
-        if (!cur_animation->frame_durations || intra_frame_counter >= cur_animation->frame_durations[frame_counter]) {
+        if (!cur_animation->frame_durations ||
+                (intra_frame_counter >= cur_animation->frame_durations[frame_counter])) {
             intra_frame_counter = 0;
             if (++frame_counter >= cur_animation->n_frames) {
                 frame_counter = 0;
