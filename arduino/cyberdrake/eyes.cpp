@@ -2,10 +2,9 @@
 #include <Adafruit_GFX.h>
 
 #include "cyberdrake.h"
+#include "color.h"
 #include "eyes.h"
 #include "anim.h"
-
-uint32_t Wheel(byte WheelPos);
 
 Adafruit_8x8matrix eyes[2];
 
@@ -105,13 +104,8 @@ static void np_neutral(void)
             return;
         }
     }
-    uint32_t wheel_color = Wheel(128 + 12*idx);
-    uint8_t c1, c2, c3;
-    c1 = (wheel_color >> 4) & 0x0F;
-    c2 = (wheel_color >> 12) & 0x0F;
-    c3 = (wheel_color >> 20) & 0x0F;
-
-    wheel_color = c1 | ((uint32_t)c2 << 8) | ((uint32_t)c3 << 16);
+    uint32_t wheel_color = color_wheel(&head_np, 128 + 12*idx);
+    wheel_color = scaled_color(wheel_color, EYE_NP_SCALE);
 
     if (iter < EYE_NP_NUM) {
         head_np.setPixelColor(EYE_L_NP_OFF + conv_l_idx(iter), 0);
@@ -122,30 +116,11 @@ static void np_neutral(void)
     head_np.setPixelColor(EYE_R_NP_OFF + conv_r_idx(iter), wheel_color);
 }
 
-static void np_irritated(void)
-{
-    // Set to orange
-    set_np_eyes_color(head_np.Color(32,16,0));
-}
 
-static void np_angry(void)
+static void np_uniform(void)
 {
-    static unsigned int iter = 0;
-    uint32_t color = (iter++ & 1) ? head_np.Color(48, 0, 0) : 0;
-    // Set to red
+    uint32_t color = scaled_color(state.disp_color, EYE_NP_SCALE);
     set_np_eyes_color(color);
-}
-
-static void np_happy(void)
-{
-    // Set to green
-    set_np_eyes_color(head_np.Color(0, 48, 0));
-}
-
-static void np_loving(void)
-{
-    // Set to pink
-    set_np_eyes_color(head_np.Color(32, 0, 16));
 }
 
 static void color_chase(uint32_t color)
@@ -175,10 +150,10 @@ static void np_owo(void)
 
 static const void (*np_func[N_MOODS])(void) = {
     np_neutral,
-    np_happy,
-    np_loving,
-    np_irritated,
-    np_angry,
+    np_uniform,
+    np_uniform,
+    np_uniform,
+    np_uniform,
     np_confused,
     np_owo
 };
@@ -199,19 +174,4 @@ bool update_eyes(void)
     update_matrix_eyes();
     update_np_eyes();
     return true;
-}
-
-// Input a value 0 to 255 to get a color value.
-// The colours are a transition r - g - b - back to r.
-uint32_t Wheel(byte WheelPos) {
-    WheelPos = 255 - WheelPos;
-    if(WheelPos < 85) {
-        return head_np.Color(255 - WheelPos * 3, 0, WheelPos * 3);
-    }
-    if(WheelPos < 170) {
-        WheelPos -= 85;
-        return head_np.Color(0, WheelPos * 3, 255 - WheelPos * 3);
-    }
-    WheelPos -= 170;
-    return head_np.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
 }

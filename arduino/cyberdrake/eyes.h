@@ -15,9 +15,8 @@
 #define EYE_BRIGHTNESS 15
 
 // Neopixel eyes
-#define EYE_NP_NUM 12
-#define EYE_L_NP_OFF 0
-#define EYE_R_NP_OFF 12
+#define EYE_NP_SCALE 4
+
 
 
 extern Adafruit_8x8matrix eyes[2];

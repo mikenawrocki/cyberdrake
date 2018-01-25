@@ -7,7 +7,19 @@
 #define HEAD_NP_PIN 6
 #define JAW_PIN 8
 
-#define HEAD_NP_NUM_PIXELS 24
+#define HEAD_NP_NUM_PIXELS 33
+
+#define EYE_NP_NUM 12
+#define EYE_L_NP_OFF 0
+#define EYE_R_NP_OFF 12
+#define HORN_OFFSET 24
+#define HORN_NUM 3
+#define JAW_U_CAN_OFFSET 27
+#define JAW_U_CAN_NUM 2
+#define JAW_U_OFFSET 29
+#define JAW_U_NUM 2
+#define JAW_L_OFFSET 31
+#define JAW_L_NUM 2
 
 enum mood {
     MOOD_NEUTRAL,
@@ -33,8 +45,8 @@ struct sensor_event_ringbuf {
 struct cyberdrake_state {
     // Sensor information
     bool jaw_open;
-    // TODO add historical gyro/accel data
     mood mood;
+    uint32_t disp_color;
     sensor_event_ringbuf gyro_buf;
     sensor_event_ringbuf accel_buf;
 };
