@@ -10,8 +10,8 @@
 #define EYE_R_ADDR 0x73
 #define EYE_L_OFFSET 0
 #define EYE_R_OFFSET 1
-#define EYE_L_ROTATION 2
-#define EYE_R_ROTATION 2
+#define EYE_L_ROTATION 3
+#define EYE_R_ROTATION 1
 #define EYE_BRIGHTNESS 15
 
 // Neopixel eyes

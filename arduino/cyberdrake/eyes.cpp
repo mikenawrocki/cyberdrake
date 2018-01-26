@@ -73,16 +73,16 @@ static void clear_np_eyes(void)
     set_np_eyes_color(0);
 }
 
-static inline uint8_t conv_r_idx(uint8_t l_idx)
+static inline uint8_t conv_r_idx(uint8_t r_idx)
 {
     // Only necessary because I mounted one eye strip upside down x.=.x
-    return (l_idx + 6) % EYE_NP_NUM;
+    return (r_idx + 9) % EYE_NP_NUM;
 }
 
 
 static inline uint8_t conv_l_idx(uint8_t l_idx)
 {
-    return l_idx;
+    return (l_idx + 9) % EYE_NP_NUM;
 }
 
 static void np_neutral(void)
